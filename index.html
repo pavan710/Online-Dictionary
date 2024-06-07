@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            background-color: #023047;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+        }
+        .container{
+            background-color: #FFB703;
+            height: auto;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 20px;
+        }
+        h3{
+            color: #023047;
+        }
+        .main{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            height: 300px;
+            width: 20%;
+            
+        }
+        input,button{
+            padding: 20px;
+            border: none;
+            border-radius: 20px;
+        }
+        button{
+            background-color: #4361EE;
+            color: white;
+            cursor: pointer;
+        }
+        .result{
+            height: auto;
+            color: white;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="main">
+            <input type="text" name="" id="" class="word" placeholder="Search a word">
+            <button class="get"> Search</button>
+        </div>
+        <div class="result">
+            <h3 class="meaning"></h3>
+            <h3 class="anto"></h3>
+            <h3 class="pos"></h3>
+            <h3 class="syno"></h3>
+
+        </div>
+    </div>
+    <script>
+      
+      async function getMeaning(word){
+
+        try{
+            let req='https://api.dictionaryapi.dev/api/v2/entries/en/'+word;
+            const response = await fetch(req);
+            const data = await response.json();
+
+            // Update the UI with the meaning
+            const resultDiv = document.querySelector('.meaning');
+            resultDiv.innerHTML = `Meaning:  ${data[0].meanings[0].definitions[0].definition}` ;
+            const anto = document.querySelector('.anto');
+            anto.innerHTML = `Antonym:  ${data[0].meanings[0].antonyms[0]}` ;
+            const same = document.querySelector('.syno');
+            same.innerHTML = `Synonyms:  ${data[0].meanings[0].synonyms[0]}` ;
+            const pos = document.querySelector('.pos');
+            pos.innerHTML = `PartsOfSpeech:${ data[0].meanings[0].partOfSpeech}` ;
+           
+            console.log( data[0].meanings[0].synonyms[0])
+        }
+        catch(err){
+            console.log(err);
+        }
+      }
+
+const button=document.querySelector('.get');
+button.addEventListener('click', function() {
+    const word = document.querySelector('.word').value;
+    getMeaning(word);
+    word.value='';
+});
+
+    </script>
+</body>
+</html>
